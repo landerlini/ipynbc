@@ -12,6 +12,9 @@ def parse_cell(cell):
     cell = copy(cell)
     if cell['cell_type'] == 'code':
         cell['execution_count'] = 1
+        if re.match(r".*ipynbc:skip.*", cell['source'].split('\n')[0]):
+            return None
+
         if re.match(r".*ipynbc:keep.*", cell['source'].split('\n')[0]):
             cell['source'] = "\n".join(cell['source'].split('\n')[1:])
             return cell
